@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  font-family: "Futura", sans-serif;
+  background: linear-gradient(
+    90deg,
+    #13041e 0%,
+    #240a36 25%,
+    #240a36 75%,
+    #13041e 100%
+  );
+}
+
+/* customize scrollbar */
+::-webkit-scrollbar {
+  background-color: #2e0d46;
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #4f1677;
+  border-radius: 4rem;
+}
