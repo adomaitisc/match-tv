@@ -154,7 +154,7 @@ const Moviemovie = ({
   return (
     <li
       onClick={(e) => handleSelect(e)}
-      className="flex w-[10rem] flex-col p-1 pb-2 cursor-pointer rounded-lg bg-black hover:bg-zinc-800 hover:backdrop-blur-lg duration-300 group"
+      className="h-80 flex w-[10rem] flex-col p-1 pb-2 cursor-pointer rounded-lg bg-black hover:bg-zinc-800 hover:backdrop-blur-lg duration-300 group"
       id={movie.id}
     >
       <img className="rounded-lg h-3/4" src={movie.i.imageUrl} alt={movie.l} />

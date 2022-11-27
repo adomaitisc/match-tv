@@ -15,7 +15,7 @@ const App = () => {
   };
 
   return (
-    <div id="appWrapper" className=" flex items-center justify-center">
+    <div id="appWrapper" className="w-full flex items-center justify-center">
       <Header switchView={handleSwitchView} view={view} />
       <div id="contentWrapper" className="w-full py-24 px-20">
         {view === "addMovies" && <AddMovies />}
