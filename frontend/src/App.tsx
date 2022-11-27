@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AddMovies from "./components/AddMovies";
 import Header from "./components/Header";
+import YourCollection from "./components/YourCollection";
 
 const App = () => {
   const [view, setView] = useState("addMovies");
@@ -14,10 +15,12 @@ const App = () => {
   };
 
   return (
-    <div className=" flex items-center justify-center">
+    <div id="appWrapper" className=" flex items-center justify-center">
       <Header switchView={handleSwitchView} view={view} />
-      {view === "addMovies" && <AddMovies />}
-      {view === "viewCollection" && <div>View Collection</div>}
+      <div id="contentWrapper" className="w-full py-24 px-20">
+        {view === "addMovies" && <AddMovies />}
+        {view === "viewCollection" && <YourCollection />}
+      </div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import logo from "../assets/movy-h.svg";
-import { FaArrowRight } from "react-icons/fa";
+import { FaSearch, FaThLarge } from "react-icons/fa";
 
 const Header = ({
   switchView,
@@ -13,10 +13,21 @@ const Header = ({
       <img src={logo} className="h-12" />
       <button
         onClick={switchView}
-        className="text-orange-500 flex items-center text-lg font-medium gap-2"
+        className="text-orange-500 flex items-center text-lg font-bold gap-2"
       >
-        {view === "addMovies" ? "View Collection" : "Add Movies"}
+        {view === "addMovies" ? (
+          <>
+            <FaThLarge />
+            Your Collection
+          </>
+        ) : (
+          <>
+            <FaSearch />
+            Search Movies
+          </>
+        )}
       </button>
+      <p className="text-orange-500 text-lg font-bold">Your Profile</p>
     </header>
   );
 };
