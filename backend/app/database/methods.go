@@ -35,3 +35,13 @@ func (d* DB) GetMovie() ([]*models.Movie, error) {
 
 	return movies, err
 } // end GetMovie func
+
+func (d* DB) DeleteMovie(MovieID int) error {
+	// check if there is a movie with that id
+	_, err := d.db.Exec(deleteMovieSchema, MovieID)
+	if err != nil {
+		return err
+	} // end if
+
+	return err
+}

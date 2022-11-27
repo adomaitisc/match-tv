@@ -21,3 +21,7 @@ INSERT INTO movies (movie_id, movie_title, movie_year, movie_link, movie_rating,
 const getMovieSchema = `
 SELECT * FROM movies
 `
+
+const deleteMovieSchema = `
+DELETE FROM movies WHERE movie_id = ?
+`

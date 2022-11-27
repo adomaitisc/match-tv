@@ -7,6 +7,7 @@ import (
 
 	"adomaitisc.com/main/app"
 	"adomaitisc.com/main/app/database"
+	"github.com/gorilla/handlers"
 )
 
 func main() {
@@ -19,8 +20,13 @@ func main() {
 
 	http.HandleFunc("/", app.Router.ServeHTTP)
 
+	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+	methods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"})
+	origins := handlers.AllowedOrigins([]string{"*"})
+
 	log.Println("Server Running on Port 8080!")
-	err = http.ListenAndServe(":8080", nil)
+	// add cors handler here
+	err = http.ListenAndServe(":8080", handlers.CORS(headers, methods, origins)(app.Router))
 	check(err)
 } // end main func
 

@@ -24,4 +24,5 @@ func (a *App) initRoutes() {
 	a.Router.HandleFunc("/", a.IndexHandler()).Methods("GET")
 	a.Router.HandleFunc("/api/movies", a.CreateMovieHandler()).Methods("POST")
 	a.Router.HandleFunc("/api/movies", a.GetMoviesHandler()).Methods("GET")
+	a.Router.HandleFunc("/api/movies/{movie_id}", a.DeleteMovieHandler()).Methods("DELETE")
 } // end initRoutes func

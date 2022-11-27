@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	"adomaitisc.com/main/app/models"
+	"github.com/gorilla/mux"
 )
 
 func (a *App) IndexHandler() http.HandlerFunc {
@@ -65,3 +67,19 @@ func (a *App) GetMoviesHandler() http.HandlerFunc {
 		sendResponse(w, r, resp, http.StatusOK)
 	} // end func
 } // end GetMoviesHandler func
+
+func (a *App) DeleteMovieHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		movie_id, err := strconv.Atoi(vars["movie_id"])
+		if err != nil {
+			log.Fatal("Error converting movie_id to int: ", err)
+			sendResponse(w, r, nil, http.StatusBadRequest)
+			return
+		} // end if
+
+		err = a.DB.DeleteMovie(movie_id)
+
+		sendResponse(w, r, err, http.StatusOK)
+	} // end func
+}
