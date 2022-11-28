@@ -44,35 +44,22 @@ const CollectionRow = ({
   movies: MovieDbType[];
   title: string;
 }) => {
-  const [count, setCount] = useState(0);
-
-  // get length of movies array
-  const countUpdate = movies.length / 2;
-
   return (
     <div className="w-full flex flex-col items-start justify-start">
       <p className="text-lg text-zinc-200 mb-4">{title}</p>
-      <div className="w-full flex justify-between text-white">
-        <button onClick={() => setCount(count - countUpdate)}>Prev</button>
-        <button onClick={() => setCount(count + countUpdate)}>Next</button>
-      </div>
-      <div className="w-full flex justify-center text-white">
-        <ul className="h-24 w-24 bg-zinc-700">
-          {movies[Math.abs(count % 3)].movie_title}
-        </ul>
-      </div>
-      {/* <ul>
+      <div className="w-full flex justify-between text-white"></div>
+      <ul className="flex flex-wrap gap-4">
         {movies.map((movie) => (
           <MovieItem key={movie.movie_id} id={movie.movie_id} movie={movie} />
         ))}
-      </ul> */}
+      </ul>
     </div>
   );
 };
 
 const MovieItem = ({ movie, id }: { movie: MovieDbType; id: number }) => {
   return (
-    <li className="flex mr-4 h-80 w-[10rem] flex-col p-1 pb-2 cursor-pointer rounded-lg bg-black hover:bg-zinc-800 hover:backdrop-blur-lg duration-300 group">
+    <li className="flex h-80 w-[10rem] flex-col p-1 pb-2 cursor-pointer rounded-lg bg-black hover:bg-zinc-800 hover:backdrop-blur-lg duration-300 group">
       <img className="rounded-lg h-3/4" src={movie.movie_poster} />
       <p className="text-zinc-400 mt-2 mx-2 group-hover:text-white duration-300">
         {movie.movie_title}
