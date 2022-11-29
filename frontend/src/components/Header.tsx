@@ -12,7 +12,7 @@ const Header = ({
     <header className="bg-black/20 backdrop-blur-sm px-20 z-10 h-16 fixed top-0 left-0 right-0 flex justify-between items-center">
       <button
         onClick={switchView}
-        className="text-orange-500 flex items-center text-lg font-bold gap-2"
+        className="text-orange-500 flex items-center text-lg font-medium gap-2"
       >
         {view === "addMovies" ? (
           <>
@@ -26,7 +26,7 @@ const Header = ({
           </>
         )}
       </button>
-      <p className="text-orange-500 text-lg font-bold">Your Profile</p>
+      <p className="text-orange-500 text-lg font-medium">Your Profile</p>
     </header>
   );
 };

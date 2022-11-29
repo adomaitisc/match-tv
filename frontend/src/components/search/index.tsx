@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import { MovieItem } from "./MovieItem";
+import { NotificationItem } from "./NotificationItem";
 
 const IMDb =
   "https://v3.sg.media-imdb.com/suggestion/titles/x/_.json?includeVideos=1";
 
-type MovieType = {
+export type MovieType = {
   i: {
     height: number;
     imageUrl: string;
@@ -27,12 +29,18 @@ type MovieDbType = {
   movie_poster: string;
 };
 
-const AddMovies = () => {
+const AddMovies = ({
+  lastState,
+  updateState,
+}: {
+  lastState: { lastSearch: string; lastMovies: MovieType[] };
+  updateState: any;
+}) => {
   // resp is the response from the IMDb url
   const [resp, setResp] = useState<MovieType[]>([]);
 
   // selected is the movie that the user has selected
-  const [selected, setSelected] = useState<any>([]);
+  const [selected, setSelected] = useState<string[]>([]);
 
   // hanldeInput is called when the user types in the input field
   const handleInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,6 +52,7 @@ const AddMovies = () => {
       res.json().then((data) => {
         // remove movies without image
         const filtered = data.d.filter((movie: MovieType) => movie.i);
+        updateState({ lastSearch: e.target.value, lastMovies: filtered });
         setResp(filtered);
       })
     );
@@ -51,10 +60,7 @@ const AddMovies = () => {
 
   // handleSelect is called when a user clicks on a movie
   // it adds to the selected array and send to the database
-  const handleSelect = (e: React.MouseEvent<HTMLLIElement>) => {
-    if (selected.find((movie: any) => movie.id === e.currentTarget.id)) {
-      return;
-    }
+  const handleSelect = (e: React.MouseEvent<HTMLButtonElement>) => {
     const movie: MovieType | undefined = resp.find(
       (movie: MovieType) => movie.id === e.currentTarget.id
     );
@@ -71,6 +77,14 @@ const AddMovies = () => {
       movie_poster: movie.i.imageUrl,
     };
 
+    // check if the movie is already in the selected array
+    const found = selected.find((msg: string) =>
+      msg.includes(movieDb.movie_title)
+    );
+    if (found !== undefined) {
+      return;
+    }
+
     //add to db
     const r = fetch("http://localhost:8080/api/movies", {
       method: "POST",
@@ -78,21 +92,22 @@ const AddMovies = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(movieDb),
-    }).then((res) => {
-      console.log(res);
-    });
-
-    setSelected([...selected, movie]);
+    }).then((res) =>
+      res.json().then((data) => {
+        setSelected([...selected, data.message]);
+      })
+    );
   };
 
   // handleDismiss is called when a user clicks on the dismiss button on a notification
   const handleDismiss = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const movie = selected.find(
-      (movie: any) => movie.id === e.currentTarget.id
-    );
     const filtered = selected.filter((movie: any) => movie.id !== movie.id);
     setSelected(filtered);
   };
+
+  useEffect(() => {
+    setResp(lastState.lastMovies);
+  }, [lastState]);
 
   return (
     <div className="w-full h-full flex flex-col justify-start movies-start">
@@ -113,13 +128,14 @@ const AddMovies = () => {
             type="text"
             onChange={handleInput}
             placeholder="Search by Movie title"
+            defaultValue={lastState.lastSearch}
           />
         </form>
       </main>
       {resp && (
         <ul id="searchResults" className="flex flex-wrap gap-4">
           {resp.map((movie: any) => (
-            <Moviemovie
+            <MovieItem
               key={movie.id}
               movie={movie}
               handleSelect={handleSelect}
@@ -129,58 +145,18 @@ const AddMovies = () => {
       )}
       <ul
         id="noticationBar"
-        className="w-96 fixed bottom-0 right-0 pr-20 pb-10"
+        className="w-96 z-10 fixed bottom-0 right-0 pr-20 pb-10"
       >
         {selected &&
-          selected.map((movie: any) => (
-            <Notificationmovie
-              key={movie.id}
-              movie={movie}
+          selected.map((msg: any) => (
+            <NotificationItem
+              key={msg}
+              message={msg}
               handleDismiss={handleDismiss}
             />
           ))}
       </ul>
     </div>
-  );
-};
-
-const Moviemovie = ({
-  movie,
-  handleSelect,
-}: {
-  movie: any;
-  handleSelect: (e: React.MouseEvent<HTMLLIElement>) => void;
-}) => {
-  return (
-    <li
-      onClick={(e) => handleSelect(e)}
-      className="h-80 flex w-[10rem] flex-col p-1 pb-2 cursor-pointer rounded-lg bg-black hover:bg-zinc-800 hover:backdrop-blur-lg duration-300 group"
-      id={movie.id}
-    >
-      <img className="rounded-lg h-3/4" src={movie.i.imageUrl} alt={movie.l} />
-      <p className="text-zinc-400 mt-2 mx-2 group-hover:text-white duration-300">
-        {movie.l}
-      </p>
-    </li>
-  );
-};
-
-const Notificationmovie = ({
-  movie,
-  handleDismiss,
-}: {
-  movie: any;
-  handleDismiss: (e: React.MouseEvent<HTMLButtonElement>) => void;
-}) => {
-  return (
-    <li className="flex text-sm w-full bg-zinc-300 backdrop-blur-sm text-black px-3 py-2 rounded-md movies-start justify-between gap-2 mb-2">
-      <p className="overflow-ellipsis">Added {movie.l}</p>
-      <div className="flex justify-center movies-center gap-2">
-        <button id={movie.id} onClick={(e) => handleDismiss(e)}>
-          Dismiss
-        </button>
-      </div>
-    </li>
   );
 };
 
