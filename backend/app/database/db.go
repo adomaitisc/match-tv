@@ -16,6 +16,7 @@ type PlanetDB interface {
 	Close() error
 	CreateMovie(m *models.Movie) error
 	GetMovie() ([]*models.Movie, error)
+	GetMovieByTitle(MovieTitle string) (*models.Movie, error)
 	DeleteMovie(MovieID int) error
 } // end PostDB interface
 

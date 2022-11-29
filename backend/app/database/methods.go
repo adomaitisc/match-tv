@@ -36,6 +36,14 @@ func (d* DB) GetMovie() ([]*models.Movie, error) {
 	return movies, err
 } // end GetMovie func
 
+func (d* DB) GetMovieByTitle(MovieTitle string) (*models.Movie, error) {
+	movie := &models.Movie{}
+
+	row := d.db.QueryRow(getMovieByTitleSchema, MovieTitle)
+	err := row.Scan(&movie.MovieID, &movie.MovieTitle, &movie.MovieYear, &movie.MovieLink, &movie.MovieRating, &movie.MovieUserRate, &movie.MovieWatched, &movie.MovieDirector, &movie.MoviePoster)
+	return movie, err
+} // end GetSingleMovie func
+
 func (d* DB) DeleteMovie(MovieID int) error {
 	// check if there is a movie with that id
 	_, err := d.db.Exec(deleteMovieSchema, MovieID)

@@ -22,6 +22,10 @@ const getMovieSchema = `
 SELECT * FROM movies
 `
 
+const getMovieByTitleSchema = `
+SELECT * FROM movies WHERE movie_title = ?
+`
+
 const deleteMovieSchema = `
 DELETE FROM movies WHERE movie_id = ?
 `
