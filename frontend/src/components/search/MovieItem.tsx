@@ -5,9 +5,11 @@ import { MovieDetails } from "./MovieDetails";
 export const MovieItem = ({
   movie,
   handleSelect,
+  setUserRating,
 }: {
   movie: MovieType;
   handleSelect: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  setUserRating: (rating: number) => void;
 }) => {
   const [opened, setOpened] = useState(false);
 
@@ -25,6 +27,7 @@ export const MovieItem = ({
           movie={movie}
           handleSelect={handleSelect}
           handleClose={() => setOpened(false)}
+          setUserRating={setUserRating}
         />
       )}
     </>

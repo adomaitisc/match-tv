@@ -1,17 +1,24 @@
 import { MovieType } from ".";
 import { FaAngleLeft, FaCheck } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const MovieDetails = ({
   movie,
   handleClose,
   handleSelect,
+  setUserRating,
 }: {
   movie: MovieType;
   handleClose: () => void;
   handleSelect: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  setUserRating: (rating: number) => void;
 }) => {
   const [selected, setSelected] = useState("");
+  // on every select change, update the userrating
+  useEffect(() => {
+    setUserRating(Number(selected));
+  }, [selected]);
+
   return (
     <div className="fixed top-0 left-0 w-full h-screen flex flex-col justify-center items-center bg-black/50 backdrop-blur-md bg-opacity-50 z-10">
       <main className="w-3/5  flex flex-col items-center gap-y-2">
@@ -26,7 +33,7 @@ export const MovieDetails = ({
               id="1"
               onClick={(e) => setSelected(e.currentTarget.id)}
               className={`${
-                selected === "1" && `bg-violet-800`
+                selected === "1" && `bg-violet-900/70`
               }   px-2 py-2 border-2 border-zinc-300 text-zinc-300 rounded-md hover:text-violet-500 hover:border-violet-500`}
             >
               Awful
@@ -35,7 +42,7 @@ export const MovieDetails = ({
               id="2"
               onClick={(e) => setSelected(e.currentTarget.id)}
               className={`${
-                selected === "2" && `bg-violet-800`
+                selected === "2" && `bg-violet-900/70`
               }   px-2 py-2 border-2 border-zinc-300 text-zinc-300 rounded-md hover:text-violet-500 hover:border-violet-500`}
             >
               Bad
@@ -44,7 +51,7 @@ export const MovieDetails = ({
               id="3"
               onClick={(e) => setSelected(e.currentTarget.id)}
               className={`${
-                selected === "3" && `bg-violet-800`
+                selected === "3" && `bg-violet-900/70`
               }   px-2 py-2 border-2 border-zinc-300 text-zinc-300 rounded-md hover:text-violet-500 hover:border-violet-500`}
             >
               Mid
@@ -53,7 +60,7 @@ export const MovieDetails = ({
               id="4"
               onClick={(e) => setSelected(e.currentTarget.id)}
               className={`${
-                selected === "4" && `bg-violet-800`
+                selected === "4" && `bg-violet-900/70`
               }   px-2 py-2 border-2 border-zinc-300 text-zinc-300 rounded-md hover:text-violet-500 hover:border-violet-500`}
             >
               Good
@@ -62,7 +69,7 @@ export const MovieDetails = ({
               id="5"
               onClick={(e) => setSelected(e.currentTarget.id)}
               className={`${
-                selected === "5" && `bg-violet-800`
+                selected === "5" && `bg-violet-900/70`
               }   px-2 py-2 border-2 border-zinc-300 text-zinc-300 rounded-md hover:text-violet-500 hover:border-violet-500`}
             >
               Great

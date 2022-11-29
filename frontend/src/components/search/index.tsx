@@ -27,6 +27,7 @@ type MovieDbType = {
   movie_watched: boolean;
   movie_director: string;
   movie_poster: string;
+  movie_user_rating: number;
 };
 
 const AddMovies = ({
@@ -36,11 +37,11 @@ const AddMovies = ({
   lastState: { lastSearch: string; lastMovies: MovieType[] };
   updateState: any;
 }) => {
-  // resp is the response from the IMDb url
   const [resp, setResp] = useState<MovieType[]>([]);
 
-  // selected is the movie that the user has selected
   const [selected, setSelected] = useState<string[]>([]);
+
+  const [userRating, setUserRating] = useState<number>(0);
 
   // hanldeInput is called when the user types in the input field
   const handleInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,6 +76,7 @@ const AddMovies = ({
       movie_watched: true,
       movie_director: movie.s,
       movie_poster: movie.i.imageUrl,
+      movie_user_rating: userRating,
     };
 
     // check if the movie is already in the selected array
@@ -86,17 +88,18 @@ const AddMovies = ({
     }
 
     //add to db
-    const r = fetch("http://localhost:8080/api/movies", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(movieDb),
-    }).then((res) =>
-      res.json().then((data) => {
-        setSelected([...selected, data.message]);
-      })
-    );
+    // const r = fetch("http://localhost:8080/api/movies", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(movieDb),
+    // }).then((res) =>
+    //   res.json().then((data) => {
+    //     setSelected([...selected, data.message]);
+    //   })
+    // );
+    console.log(userRating);
   };
 
   // handleDismiss is called when a user clicks on the dismiss button on a notification
@@ -139,6 +142,7 @@ const AddMovies = ({
               key={movie.id}
               movie={movie}
               handleSelect={handleSelect}
+              setUserRating={setUserRating}
             />
           ))}
         </ul>
