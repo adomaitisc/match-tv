@@ -1,30 +1,40 @@
-import { MovieType } from ".";
-import { FaAngleLeft, FaCheck } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { FaAngleLeft, FaCheck, FaRegTrashAlt } from "react-icons/fa";
+import { MovieDbType } from ".";
 
 export const MovieDetails = ({
   movie,
   handleClose,
-  handleSelect,
-  setUserRating,
+  handleRemove,
 }: {
-  movie: MovieType;
+  movie: MovieDbType;
   handleClose: () => void;
-  handleSelect: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  setUserRating: (rating: number) => void;
+  handleRemove: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }) => {
   const [selected, setSelected] = useState("");
-  // on every select change, update the userrating
+
   useEffect(() => {
-    setUserRating(Number(selected));
+    setSelected(movie.movie_user_rating.toString());
   }, [selected]);
 
   return (
     <div className="fixed top-0 left-0 w-full h-screen flex flex-col justify-center items-center bg-black/60 backdrop-blur-md bg-opacity-50 z-10">
       <main className="w-3/5  flex flex-col items-center gap-y-2">
-        <img className="rounded-lg w-1/3 mb-4" src={movie.i.imageUrl} />
-        <p className="text-white text-3xl font-medium text-center">{movie.l}</p>
-        <p className="text-zinc-400 text-lg">Select what you fell about it</p>
+        <div className="flex justify-end w-full mb-4">
+          <button
+            id={movie.movie_id.toString()}
+            onClick={(e) => handleRemove(e)}
+            className="text-red-500 hover:text-red-800 flex items-center gap-x-2 rounded-md text-base font-medium duration-300"
+          >
+            <FaRegTrashAlt />
+            Remove
+          </button>
+        </div>
+        <img className="rounded-lg w-1/3 mb-4" src={movie.movie_poster} />
+        <p className="text-white text-3xl font-medium text-center">
+          {movie.movie_title}
+        </p>
+        <p className="text-zinc-400 text-lg">Your rating</p>
         <div className="flex gap-x-2 justify-center items-center">
           <button
             id="1"
@@ -78,16 +88,14 @@ export const MovieDetails = ({
             className="text-orange-400 hover:text-orange-800 flex items-center gap-x-2 rounded-md text-lg font-medium duration-300"
           >
             <FaAngleLeft />
-            Back to Search
+            Go Back
           </button>
           <button
-            onClick={(e) => handleSelect(e)}
-            id={movie.id}
-            disabled={selected === ""}
+            id={movie.movie_id.toString()}
             className=" disabled:text-zinc-600 text-orange-400 hover:text-orange-800 flex items-center gap-x-2 rounded-md text-lg font-medium duration-300"
           >
             <FaCheck />
-            Add to Collection
+            Save Changes
           </button>
         </div>
       </main>

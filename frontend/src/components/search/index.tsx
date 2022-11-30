@@ -65,7 +65,7 @@ const AddMovies = ({
     const movie: MovieType | undefined = resp.find(
       (movie: MovieType) => movie.id === e.currentTarget.id
     );
-    if (movie === undefined) {
+    if (movie === undefined || userRating === 0) {
       return;
     }
 
@@ -87,19 +87,18 @@ const AddMovies = ({
       return;
     }
 
-    //add to db
-    // const r = fetch("http://localhost:8080/api/movies", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(movieDb),
-    // }).then((res) =>
-    //   res.json().then((data) => {
-    //     setSelected([...selected, data.message]);
-    //   })
-    // );
-    console.log(userRating);
+    // add to db
+    const r = fetch("http://localhost:8080/api/movies", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(movieDb),
+    }).then((res) =>
+      res.json().then((data) => {
+        setSelected([...selected, data.message]);
+      })
+    );
   };
 
   // handleDismiss is called when a user clicks on the dismiss button on a notification
